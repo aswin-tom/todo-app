@@ -21,7 +21,7 @@ export default function App() {
 
   // Add a new task
   const addTask = () => {
-    if (!newTask.trim()) return; // ignore empty
+    if (!newTask.trim()) return; // ignore empty input
     setTasks([
       ...tasks,
       { id: Date.now(), text: newTask.trim(), completed: false },
@@ -51,81 +51,48 @@ export default function App() {
   });
 
   return (
-    <div className="max-w-md mx-auto p-4">
-      <h1 className="text-3xl font-bold mb-4 text-center">ToDo App</h1>
+    <div style={{ maxWidth: 400, margin: "auto", padding: 20 }}>
+      <h1 style={{ textAlign: "center" }}>ToDo App</h1>
 
-      <div className="flex gap-2 mb-4">
+      <div style={{ display: "flex", marginBottom: 10 }}>
         <input
           type="text"
           placeholder="Add a new task"
           value={newTask}
           onChange={(e) => setNewTask(e.target.value)}
-          className="flex-grow border border-gray-300 rounded px-3 py-2"
           onKeyDown={(e) => e.key === "Enter" && addTask()}
+          style={{ flexGrow: 1, padding: 8 }}
         />
-        <button
-          onClick={addTask}
-          className="bg-blue-600 text-white px-4 rounded hover:bg-blue-700"
-        >
+        <button onClick={addTask} style={{ marginLeft: 8, padding: "8px 16px" }}>
           Add
         </button>
       </div>
 
-      <div className="flex justify-center gap-4 mb-4">
-        <button
-          onClick={() => setFilter("all")}
-          className={`px-3 py-1 rounded ${
-            filter === "all" ? "bg-blue-600 text-white" : "bg-gray-200"
-          }`}
-        >
-          All
-        </button>
-        <button
-          onClick={() => setFilter("active")}
-          className={`px-3 py-1 rounded ${
-            filter === "active" ? "bg-blue-600 text-white" : "bg-gray-200"
-          }`}
-        >
-          Active
-        </button>
-        <button
-          onClick={() => setFilter("completed")}
-          className={`px-3 py-1 rounded ${
-            filter === "completed" ? "bg-blue-600 text-white" : "bg-gray-200"
-          }`}
-        >
-          Completed
-        </button>
+      <div style={{ marginBottom: 10, textAlign: "center" }}>
+        <button onClick={() => setFilter("all")} disabled={filter === "all"}>All</button>
+        <button onClick={() => setFilter("active")} disabled={filter === "active"} style={{ marginLeft: 5 }}>Active</button>
+        <button onClick={() => setFilter("completed")} disabled={filter === "completed"} style={{ marginLeft: 5 }}>Completed</button>
       </div>
 
-      <ul>
-        {filteredTasks.length === 0 && (
-          <li className="text-center text-gray-500">No tasks to show</li>
-        )}
+      <ul style={{ listStyle: "none", paddingLeft: 0 }}>
+        {filteredTasks.length === 0 && <li>No tasks to show</li>}
         {filteredTasks.map((task) => (
-          <li
-            key={task.id}
-            className="flex items-center justify-between mb-2 border-b pb-1"
-          >
-            <label className="flex items-center gap-2 cursor-pointer flex-grow">
-              <input
-                type="checkbox"
-                checked={task.completed}
-                onChange={() => toggleTask(task.id)}
-                className="cursor-pointer"
-              />
-              <span
-                className={`${
-                  task.completed ? "line-through text-gray-500" : ""
-                }`}
-              >
-                {task.text}
-              </span>
-            </label>
-            <button
-              onClick={() => deleteTask(task.id)}
-              className="text-red-600 hover:text-red-800 font-bold ml-2"
+          <li key={task.id} style={{ display: "flex", alignItems: "center", marginBottom: 5 }}>
+            <input
+              type="checkbox"
+              checked={task.completed}
+              onChange={() => toggleTask(task.id)}
+            />
+            <span
+              style={{
+                marginLeft: 8,
+                textDecoration: task.completed ? "line-through" : "none",
+                flexGrow: 1,
+              }}
             >
+              {task.text}
+            </span>
+            <button onClick={() => deleteTask(task.id)} style={{ marginLeft: 8 }}>
               X
             </button>
           </li>
